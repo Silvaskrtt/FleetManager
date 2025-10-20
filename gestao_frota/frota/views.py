@@ -1,7 +1,8 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .models import Carro
 
-
+@login_required
 def lista_carros(request):
     carros = Carro.objects.all().order_by('modelo')  # Ordena por modelo
 
@@ -9,7 +10,7 @@ def lista_carros(request):
 
     return render(request, 'frota/lista_carros.html', contexto)
 
-
+@login_required
 def adicionar_carro(request):
     if request.method == 'POST':
         # Pega os dados do formulário
@@ -26,7 +27,7 @@ def adicionar_carro(request):
     # Se o método não for POST, renderiza o formulário vazio
     return render(request, 'frota/form_carro.html')
 
-
+@login_required
 def editar_carro(request, pk):
     # Busca o carro específico pelo seu id (pk)
     carro = Carro.objects.get(id=pk)
@@ -44,6 +45,7 @@ def editar_carro(request, pk):
         contexto = {'carro': carro}
         return render(request, 'frota/form_carro_editar.html', contexto)
 
+@login_required
 def excluir_carro(request, pk):
     carro = Carro.objects.get(id=pk)
     if request.method == 'POST':
